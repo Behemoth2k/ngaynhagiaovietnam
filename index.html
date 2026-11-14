@@ -358,6 +358,74 @@
   }
 
   /* =========================================================
+     CON SỐ ẤN TƯỢNG — dải nền nâu
+     ========================================================= */
+  .stats {
+    padding: 64px 24px; color: #f7ebd6; overflow: hidden;
+    background:
+      radial-gradient(60% 120% at 50% 0%, rgba(176, 125, 58, .3), transparent 70%),
+      var(--espresso);
+  }
+  .stats-grid {
+    max-width: 1080px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .stat {
+    position: relative; text-align: center; padding: 10px 16px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  .stat + .stat::before {
+    content: ''; position: absolute; left: 0; top: 15%; bottom: 15%; width: 1px;
+    background: linear-gradient(transparent, rgba(241, 221, 178, .35), transparent);
+  }
+  .stat .num {
+    font-family: var(--serif); font-weight: 600; line-height: 1;
+    font-size: clamp(2.8rem, 6vw, 4.4rem); font-variant-numeric: lining-nums tabular-nums;
+    background: linear-gradient(135deg, var(--gold-pale), var(--bronze-light) 50%, var(--rust));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .stat .label { font-size: .72rem; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: rgba(247, 235, 214, .72); }
+
+  /* =========================================================
+     BĂNG ẢNH POLAROID
+     ========================================================= */
+  .strip { padding: 80px 0 70px; overflow: hidden; background: linear-gradient(var(--cream), #f1e4cf); }
+  .strip-head { text-align: center; padding: 0 24px; }
+  .marquee {
+    overflow: hidden; padding: 34px 0 46px;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  }
+  .track { display: flex; width: max-content; animation: marquee 80s linear infinite; }
+  .marquee:hover .track, .marquee:focus-within .track { animation-play-state: paused; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+  .polaroid {
+    position: relative; flex: none; width: 196px; margin-right: 34px;
+    padding: 12px 12px 16px; border: 0; border-radius: 3px; cursor: pointer;
+    background: #fffdf8; color: var(--ink); font: inherit; text-align: center;
+    box-shadow: 0 2px 4px rgba(58, 34, 22, .08), 0 14px 30px rgba(58, 34, 22, .14);
+    transform: rotate(var(--r, 0deg));
+    transition: transform .6s var(--ease), box-shadow .6s var(--ease);
+  }
+  .polaroid::before {
+    content: ''; position: absolute; top: -11px; left: 50%; width: 74px; height: 22px; margin-left: -37px;
+    background: rgba(217, 178, 111, .55); transform: rotate(var(--t, -3deg));
+    box-shadow: 0 1px 2px rgba(58, 34, 22, .08);
+  }
+  .polaroid img {
+    width: 100%; aspect-ratio: 300 / 366; object-fit: cover; border-radius: 1px;
+    filter: saturate(.78) sepia(.16) contrast(1.03);
+    transition: filter .6s var(--ease);
+  }
+  .polaroid .cap { display: block; margin-top: 12px; font-family: var(--script); font-size: 1.18rem; line-height: 1.2; color: var(--ink); }
+  .polaroid .sub { display: block; margin-top: 4px; font-size: .6rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--bronze); }
+  .polaroid:hover, .polaroid:focus-visible {
+    transform: rotate(0deg) translateY(-12px) scale(1.05); z-index: 2; outline: none;
+    box-shadow: 0 4px 8px rgba(58, 34, 22, .1), 0 26px 50px rgba(58, 34, 22, .22);
+  }
+  .polaroid:hover img { filter: saturate(.95) sepia(.04) contrast(1.03); }
+
+  /* =========================================================
      THẦY CÔ
      ========================================================= */
   #thay-co {
@@ -817,6 +885,15 @@
     .letter-bento { grid-template-columns: 1fr 1fr; }
     .paper { grid-column: 1 / -1; grid-row: auto; }
     .b-quote, .b-text, .b-wide { grid-column: span 12; }
+    .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 34px; }
+    .stat:nth-child(3)::before { display: none; }
+  }
+  @media (max-width: 720px) {
+    .stats { padding: 52px 16px; }
+    .strip { padding: 64px 0 50px; }
+    .polaroid { width: 150px; margin-right: 24px; padding: 9px 9px 12px; }
+    .polaroid .cap { font-size: 1rem; }
+    .track { animation-duration: 60s; }
   }
   @media (max-width: 720px) {
     .menu-btn { display: block; }
@@ -1088,6 +1165,16 @@
   <span class="scroll-cue" aria-hidden="true"></span>
 </header>
 
+<!-- ===== Con số ấn tượng ===== -->
+<section class="stats" id="con-so" aria-label="Những con số">
+  <div class="stats-grid">
+    <div class="stat reveal"><span class="num" id="statTeachers">0</span><span class="label">Thầy cô kính yêu</span></div>
+    <div class="stat reveal" style="--delay:.1s"><span class="num" id="statLetters">0</span><span class="label">Lá thư tri ân</span></div>
+    <div class="stat reveal" style="--delay:.2s"><span class="num" id="statStudents">0</span><span class="label">Trái tim học trò</span></div>
+    <div class="stat reveal" style="--delay:.3s"><span class="num" id="statThanks">0</span><span class="label">Lời cảm ơn</span></div>
+  </div>
+</section>
+
 <!-- ===== Thư ngỏ ===== -->
 <section id="thu-ngo">
   <div class="container">
@@ -1118,6 +1205,16 @@
         <p>Những người lái đò thầm lặng</p>
       </aside>
     </div>
+  </div>
+</section>
+
+<!-- ===== Băng ảnh polaroid ===== -->
+<section class="strip" id="khoanh-khac" aria-label="Những gương mặt thân thương">
+  <div class="strip-head reveal">
+    <span class="kicker">Những gương mặt thân thương</span>
+  </div>
+  <div class="marquee">
+    <div class="track" id="polaroidTrack"></div>
   </div>
 </section>
 
@@ -1596,6 +1693,56 @@ letterDlg.addEventListener('close', () => document.body.classList.remove('modal-
 letterDlg.addEventListener('cancel', e => { e.preventDefault(); closeLetter(); });
 letterDlg.addEventListener('click', e => { if (e.target === letterDlg) closeLetter(); });
 $('#letterClose').addEventListener('click', closeLetter);
+
+/* ======================= Băng ảnh polaroid ======================= */
+(function buildPolaroids() {
+  const items = TEACHERS.map((t, i) => [t, i]).filter(([t]) => t.photo);
+  const html = items.map(([t, i], k) => {
+    const r = ((k * 37) % 9 - 4) * .9;          // nghiêng lệch nhẹ, mỗi tấm một góc
+    const tape = ((k * 53) % 7 - 3) * 1.5;
+    return `<button class="polaroid" type="button" data-i="${i}" style="--r:${r}deg;--t:${tape}deg" aria-label="${t.name}">
+      <img src="${t.photo}" alt="" loading="lazy">
+      <span class="cap">${t.name}</span>
+      <span class="sub">${t.subject}</span>
+    </button>`;
+  }).join('');
+  const track = $('#polaroidTrack');
+  track.innerHTML = html + html;                // nhân đôi để chạy vòng liền mạch
+  track.querySelectorAll('.polaroid').forEach((p, k) => {
+    if (k >= items.length) { p.tabIndex = -1; p.setAttribute('aria-hidden', 'true'); }
+    p.addEventListener('click', () => {
+      const t = TEACHERS[p.dataset.i];
+      if (LETTERS[t.name]) openLetter(t.name, p);
+      else document.querySelector(`.teacher[data-i="${p.dataset.i}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  });
+})();
+
+/* ======================= Con số ấn tượng (đếm khi cuộn tới) ======================= */
+(function stats() {
+  const targets = {
+    statTeachers: () => TEACHERS.length,
+    statLetters: () => Object.keys(LETTERS).length,
+    statStudents: () => HEART_BASE,
+    statThanks: () => TEACHERS.reduce((s, t) => s + heartCount(t.name), 0)
+  };
+  const fmt = n => n.toLocaleString('vi-VN');
+  function run(el, to) {
+    const start = performance.now(), dur = 1800;
+    (function step(now) {
+      const p = Math.min(1, (now - start) / dur);
+      el.textContent = fmt(Math.round(to * (1 - Math.pow(1 - p, 3))));
+      if (p < 1) requestAnimationFrame(step);
+    })(start);
+  }
+  const box = $('#con-so');
+  const so = new IntersectionObserver(entries => {
+    if (!entries.some(e => e.isIntersecting)) return;
+    so.disconnect();
+    Object.entries(targets).forEach(([id, get]) => run($('#' + id), get()));
+  }, { threshold: .35 });
+  so.observe(box);
+})();
 
 /* ======================= Lời kết: chuyển Tiếng Việt / English ======================= */
 document.querySelectorAll('.lang-switch button').forEach(btn => btn.addEventListener('click', () => {
